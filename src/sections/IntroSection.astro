@@ -92,17 +92,17 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 	}
 
 	@media (max-width: 768px) {
-		.IntroSection {
-			&__gif {
-				display: block;
-			}
-			&__vid {
-				// display: none;
+  .IntroSection {
+    &__gif {
+      display: block;
+    }
 
-				object-fit: cover;
-				// width: 60%;
-				// height: 65%;
-			}
-		}
-	}
+    &__vid {
+      width: 50vw;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+}
+
 </style>

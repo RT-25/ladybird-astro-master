@@ -14,33 +14,34 @@ export const patientConvo_pt1 = [
 ];
 
 export const patientConvo_pt2 = [
-  { speaker: "AI", text: "Thank you, Luke.", time: 0 },
-  { speaker: "AI", text: "How can I help?", time: 2 },
-  { speaker: "Patient", text: "I've been getting headaches on and off.", time: 2.5 },
-  { speaker: "Patient", text: "For the past few weeks.", time: 2.6 },
+  { speaker: "AI", text: "Thank you, Luke. How can I help?", time: 0 },
+  { speaker: "Patient", text: "I've been getting headaches on and off for the past few weeks.", time: .7 },
 ];
+
 
 export const patientConvo_pt3 = [
   { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
-  { speaker: "AI", text: "Let's get you booked in", time: 1.8 },
-  { speaker: "AI", text: "With Dr. Lee as soon as we can.", time: 2 },
-  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 5.6 },
-  { speaker: "Patient", text: "Yes, that works.", time: 7.8 },
-  { speaker: "AI", text: "Great. I'll book you in.", time: 8.5 },
+  { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .6 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 6.8 },
+  { speaker: "AI", text: "", time: 12 },
+  { speaker: "Patient", text: "Yes, that works.", time: 11 },
+  { speaker: "AI", text: "Great. I'll book you in.", time: 13 },
 ];
+
 
 export const patientConvo_pt4 = [
   { speaker: "AI", text: "Alright, Luke.", time: 0 },
-  { speaker: "AI", text: "You'll receive a confirmation text.", time: 2 },
-  { speaker: "AI", text: "And a feedback form shortly.", time: 4 },
-  { speaker: "Patient", text: "Thanks.", time: 6 },
+  { speaker: "AI", text: "You'll receive a confirmation text.", time: 1.6 },
+  { speaker: "AI", text: "And a feedback form shortly.", time: 3.1 },
+  { speaker: "Patient", text: "Thanks.", time: 4.4 },
 ];
+
 
 export const patientConvo_pt5 = [
   { speaker: "AI", text: "Is there anything else I can help you with?", time: 0 },
-  { speaker: "Patient", text: "No, that was all.", time: 2.3 },
-  { speaker: "AI", text: "Take care.", time: 4 },
-  { speaker: "AI", text: "Bye.", time: 5.5 },
+  { speaker: "Patient", text: "No, that was all.", time: 2.1 },
+  { speaker: "AI", text: "Take care.", time: 3.4 },
+  { speaker: "AI", text: "Bye.", time: 4.6 },
 ];
 
 
@@ -53,7 +54,6 @@ export const convoLoadingText = [
 ---
 
 <script>
-	// if isIOS, add --isIOS to classname
 
 	import { isIOS } from "../utils/helpers";
 
@@ -115,9 +115,10 @@ export const convoLoadingText = [
 		convo.forEach((line, lineIndex) => {
 		const selector = `.PhoneSection__convo__text[data-part="${audioIndex}"][data-line="${lineIndex}"]`;
 		const el = document.querySelector(selector);
-		if (line.time <= time && el && !el.classList.contains("visible")) {
-			el.classList.add("visible");
-		}
+		if (time >= line.time && el && !el.classList.contains("visible")) {
+      el.classList.add("visible");
+    }
+
 		});
 	});
 	});
@@ -140,13 +141,13 @@ export const convoLoadingText = [
 	</audio>
 	<audio controls muted class="PhoneSection__audio PhoneSection__audio--2">
 		<source
-			src="https://res.cloudinary.com/dywp91yx7/video/upload/v1746625768/folio-v2/ladybird-part-2.mp3"
+			src="./public/audio/part-2.mp3"
 			type="audio/mpeg"
 		/>
 	</audio>
 	<audio controls muted class="PhoneSection__audio PhoneSection__audio--3">
 		<source
-			src="https://res.cloudinary.com/dywp91yx7/video/upload/v1746630795/folio-v2/ladybird-part-3.mp3"
+			src="./public/audio/part-3.mp3"
 			type="audio/mpeg"
 		/>
 	</audio>
