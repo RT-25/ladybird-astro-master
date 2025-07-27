@@ -5,46 +5,44 @@ import { tabItems } from "../utils/constants";
 import PhoneDotLoader from "../components/PhoneDotLoader.astro";
 
 export const patientConvo_pt1 = [
-	{ speaker: "AI", text: "Hello, you’ve reached the GP Centre." },
-	{ speaker: "AI", text: "Could you confirm your full name, please?" },
-	{ speaker: "Patient", text: "Luke Davis." },
-	{ speaker: "AI", text: "Thanks, Luke." },
-	{ speaker: "AI", text: "And your date of birth, please?" },
-	{ speaker: "Patient", text: "15th of March, 1985." },
+  { speaker: "AI", text: "Hello, you’ve reached the GP Centre.", time: 0 },
+  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.5 },
+  { speaker: "Patient", text: "Luke Davis.", time: 4.8 },
+  { speaker: "AI", text: "Thanks, Luke.", time: 6.3 },
+  { speaker: "AI", text: "And your date of birth, please?", time: 8.1 },
+  { speaker: "Patient", text: "15th of March, 1985.", time: 9.9 },
 ];
 
 export const patientConvo_pt2 = [
-	{ speaker: "AI", text: "Thank you, Luke." },
-	{ speaker: "AI", text: "How can I help?" },
-	{ speaker: "Patient", text: "I've been having headaches on and off." },
-	{ speaker: "Patient", text: "For the past few weeks." },
+  { speaker: "AI", text: "Thank you, Luke.", time: 0 },
+  { speaker: "AI", text: "How can I help?", time: 2 },
+  { speaker: "Patient", text: "I've been getting headaches on and off.", time: 2.5 },
+  { speaker: "Patient", text: "For the past few weeks.", time: 2.6 },
 ];
 
 export const patientConvo_pt3 = [
-	{ speaker: "AI", text: "I'm sorry to hear that, Luke." },
-	{ speaker: "AI", text: "Let's get you booked in" },
-	{ speaker: "AI", text: "With Dr. Lee as soon as we can." },
-	{ speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?" },
-	{ speaker: "Patient", text: "Yes, that works." },
-	{ speaker: "AI", text: "Great. I'll book you in." },
+  { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
+  { speaker: "AI", text: "Let's get you booked in", time: 1.8 },
+  { speaker: "AI", text: "With Dr. Lee as soon as we can.", time: 2 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 5.6 },
+  { speaker: "Patient", text: "Yes, that works.", time: 7.8 },
+  { speaker: "AI", text: "Great. I'll book you in.", time: 8.5 },
 ];
 
 export const patientConvo_pt4 = [
-	{ speaker: "AI", text: "Alright, Luke." },
-	{ speaker: "AI", text: "You'll receive a confirmation text." },
-	{ speaker: "AI", text: "And a feedback form shortly." },
-	{ speaker: "Patient", text: "Thanks." },
+  { speaker: "AI", text: "Alright, Luke.", time: 0 },
+  { speaker: "AI", text: "You'll receive a confirmation text.", time: 2 },
+  { speaker: "AI", text: "And a feedback form shortly.", time: 4 },
+  { speaker: "Patient", text: "Thanks.", time: 6 },
 ];
 
 export const patientConvo_pt5 = [
-	// { speaker: "AI", text: "Thanks, Sarah." },
-	{ speaker: "AI", text: "Is there anything else I can help you with?" },
-	{ speaker: "Patient", text: "No, that was all." },
-	// { speaker: "Patient", text: "Thank you." },
-	{ speaker: "AI", text: "Take care." },
-	{ speaker: "AI", text: "Bye." },
-	// { speaker: "Patient", text: "Bye." },
+  { speaker: "AI", text: "Is there anything else I can help you with?", time: 0 },
+  { speaker: "Patient", text: "No, that was all.", time: 2.3 },
+  { speaker: "AI", text: "Take care.", time: 4 },
+  { speaker: "AI", text: "Bye.", time: 5.5 },
 ];
+
 
 export const convoLoadingText = [
 	["Verifying…", "Verified"],
@@ -99,11 +97,36 @@ export const convoLoadingText = [
 				);
 		}
 	});
+
+	const allConvos = [
+	patientConvo_pt1,
+	patientConvo_pt2,
+	patientConvo_pt3,
+	patientConvo_pt4,
+	patientConvo_pt5,
+	];
+
+	audioEls.forEach((audio, audioIndex) => {
+	const convo = allConvos[audioIndex];
+
+	audio.addEventListener("timeupdate", () => {
+		const time = audio.currentTime;
+
+		convo.forEach((line, lineIndex) => {
+		const selector = `.PhoneSection__convo__text[data-part="${audioIndex}"][data-line="${lineIndex}"]`;
+		const el = document.querySelector(selector);
+		if (line.time <= time && el && !el.classList.contains("visible")) {
+			el.classList.add("visible");
+		}
+		});
+	});
+	});
+
 </script>
 
 <div class="PhoneSection__title">
 	<h1 class="specialH1">
-		This is the <span style="font-weight: 700;">Call</span>
+		A GP <span style="font-weight: 700;">Call</span>
 	</h1>
 	<h1 class="">Powered entirely by inCall</h1>
 </div>
@@ -146,33 +169,29 @@ export const convoLoadingText = [
 		<div class="PhoneSection__convoWrap">
 			<div class="PhoneSection__fakeConvoPart"></div>
 			{
-				[
-					patientConvo_pt1,
-					patientConvo_pt2,
-					patientConvo_pt3,
-					patientConvo_pt4,
-					patientConvo_pt5,
-				].map((convoPart) => (
+				[patientConvo_pt1, patientConvo_pt2, patientConvo_pt3, patientConvo_pt4, patientConvo_pt5].map((convoPart, i) => (
 					<div class="PhoneSection__convoPart">
-						{convoPart.map((convoItem) => (
-							<div class="PhoneSection__convo">
-								<p
-									class={`PhoneSection__convo__text PhoneSection__convo__text--${convoItem.speaker}`}
-								>
-									{convoItem.text}
-								</p>
-								{/* <div class="PhoneSection__convo__cursor" /> */}
-							</div>
-						))}
+					{convoPart.map((convoItem, j) => (
+						<div class="PhoneSection__convo">
+						<p
+							class={`PhoneSection__convo__text PhoneSection__convo__text--${convoItem.speaker}`}
+							data-part={i}
+							data-line={j}
+							>
+							{convoItem.text}
+						</p>
+						</div>
+					))}
 					</div>
 				))
-			}
+				}
+
 			{
 				convoLoadingText.map((convoItem) => (
 					<div class="PhoneSection__loadingPart">
 						{convoItem.map((item) => (
 							<div class="PhoneSection__loading">
-								<p class={`PhoneSection__loading__text`}>{item}</p>
+								<p class="PhoneSection__loading__text">{item}</p>
 							</div>
 						))}
 					</div>
@@ -253,7 +272,7 @@ export const convoLoadingText = [
 		&__loadingPart,
 		&__fakeConvoPart {
 			height: 0;
-			overflow: hidden;
+			overflow: visible;
 		}
 		&__convoPart:first-of-type {
 			height: 6rem;
@@ -338,4 +357,16 @@ export const convoLoadingText = [
 			}
 		}
 	}
+
+	.PhoneSection__convo__text {
+		opacity: 0;
+		transform: translateY(10px);
+		transition: all 0.5s ease-in-out;
+
+		&.visible {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 </style>
