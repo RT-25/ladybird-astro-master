@@ -77,6 +77,15 @@ export const patientConvo_pt5 = [
   { speaker: "AI", text: "Take care, Bye.", time: 3.4 },
 ];
 
+const allConvos = [
+  patientConvo_pt1, 
+  patientConvo_pt2, 
+  patientConvo_pt3, 
+  patientConvo_pt4, 
+  patientConvo_pt5
+];
+
+
 import { isIOS } from "../utils/helpers";
 
 window.addEventListener("load", () => {
@@ -99,12 +108,26 @@ window.addEventListener("load", () => {
   Promise.all(waitForAudio).then(() => {
     PhoneSection__inner.classList.add("PhoneSection__inner--ready");
 
+	let previousSpeaker = null;
+
     // Add the visible class to text elements after the audio is ready, with individual delays
     textElements.forEach((el, index) => {
       setTimeout(() => {
-		el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-        el.classList.add('visible'); // Trigger transition for each element
-      }, index * 1000); // 1 second delay per element (can adjust this as needed)
+		const partIndex = el.getAttribute('data-part');
+        const lineIndex = el.getAttribute('data-line');
+		const currentSpeaker = allConvos[partIndex][lineIndex].speaker;
+
+		if (currentSpeaker !== previousSpeaker) {
+          // Add the transition and transform only on speaker change
+          el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+          el.classList.add('visible'); // Trigger transition for the new speaker
+        } else {
+          // Only apply the visibility for the same speaker
+          el.classList.add('visible'); // No transform for the same speaker
+        }
+
+		previousSpeaker = currentSpeaker;
+      }, index * 1000); // 1 second delay per element
     });
   });
 
@@ -363,17 +386,17 @@ window.addEventListener("load", () => {
 	}
 
 	.PhoneSection__convo__text {
-		opacity: 0;
-		transform: translateX(-100px);
-		visibility: hidden;
+	opacity: 0; /* Start hidden */
+	transform: translateX(-100px); /* Start off-screen */
+	visibility: hidden; /* Make it fully hidden */
+	transition: opacity 0.5s ease, transform 0.5s ease; /* Define the transition */
 
+	&.visible {
+		opacity: 1; /* Fade in */
+		transform: translateX(0); /* Slide in */
+		visibility: visible; /* Make it visible */
 	}
-
-	.PhoneSection__convo__text.visible {
-			opacity: 1;
-			transform: translateX(0);
-			visibility: visible;
-		}
+	}
 
 
   .PhoneSection__inner {
