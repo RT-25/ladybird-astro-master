@@ -76,13 +76,14 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 			display: block;
 		}
 		&__gif {
-			// display: none;
+		 display: none;
 		}
 
-		// svg {
-		// 	width: 100%;
-		// 	height: 50vh;
-		// }
+		 svg {
+		 	width: 100%;
+			max-width: 1600;
+		 	height: auto;
+		 }
 
 		.btn {
 			position: absolute;
@@ -90,15 +91,41 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 			right: 2rem;
 		}
 	}
+	
+@media (max-width: 768px) {
+	.IntroSection{
+		svg {
+		width: 80vw; 
+		max-width: 1000px; 
+		height: auto;
+		}
 
-	@media (max-width: 768px) {
+		// Display GIF on smaller screens
+		&__gif {
+		display: block;
+		}
+
+		&__vid {
+		display: block;
+		/* Hide the video on smaller screens */
+		}
+	}
+  }
+
+	@media (max-width: 500px) {
   .IntroSection {
+	svg{
+		width: 100vw;
+		max-width: 500px;
+		height: auto;
+	}
+
     &__gif {
       display: block;
     }
 
     &__vid {
-      width: 50vw;
+      width: 100vw;
       height: auto;
       object-fit: contain;
     }
