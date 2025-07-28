@@ -18,8 +18,8 @@ export const patientConvo_pt2 = [
 ];
 export const patientConvo_pt3 = [
   { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
-  { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .6 },
-  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 6.8 },
+  { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .5 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 6.4 },
   { speaker: "AI", text: "", time: 12 },
   { speaker: "Patient", text: "Yes, that works.", time: 11 },
   { speaker: "AI", text: "Great. I'll book you in.", time: 13 },
@@ -33,8 +33,7 @@ export const patientConvo_pt4 = [
 export const patientConvo_pt5 = [
   { speaker: "AI", text: "Is there anything else I can help you with?", time: 0 },
   { speaker: "Patient", text: "No, that was all.", time: 2.1 },
-  { speaker: "AI", text: "Take care.", time: 3.4 },
-  { speaker: "AI", text: "Bye.", time: 4.6 },
+  { speaker: "AI", text: "Take care, Bye.", time: 3.4 },
 ];
 
 export const convoLoadingText = [
@@ -46,14 +45,13 @@ export const convoLoadingText = [
 ---
 
 <script>
-
 export const patientConvo_pt1 = [
   { speaker: "AI", text: "Hello, you’ve reached the GP Centre.", time: 0 },
-  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.5 },
-  { speaker: "Patient", text: "Luke Davis.", time: 4.8 },
-  { speaker: "AI", text: "Thanks, Luke.", time: 6.3 },
-  { speaker: "AI", text: "And your date of birth, please?", time: 8.1 },
-  { speaker: "Patient", text: "15th of March, 1985.", time: 9.9 },
+  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.48 },
+  { speaker: "Patient", text: "Luke Davis.", time: 4.45 },
+  { speaker: "AI", text: "Thanks, Luke.", time: 5.68 },
+  { speaker: "AI", text: "And your date of birth, please?", time: 7 },
+  { speaker: "Patient", text: "15th of March, 1985.", time: 8.7 },
 ];
 export const patientConvo_pt2 = [
   { speaker: "AI", text: "Thank you, Luke. How can I help?", time: 0 },
@@ -61,11 +59,11 @@ export const patientConvo_pt2 = [
 ];
 export const patientConvo_pt3 = [
   { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
-  { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .6 },
-  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 6.8 },
+  { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .5 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 5.92 },
   { speaker: "AI", text: "", time: 12 },
-  { speaker: "Patient", text: "Yes, that works.", time: 11 },
-  { speaker: "AI", text: "Great. I'll book you in.", time: 13 },
+  { speaker: "Patient", text: "Yes, that works.", time: 9.75 },
+  { speaker: "AI", text: "Great. I'll book you in.", time: 11.55 },
 ];
 export const patientConvo_pt4 = [
   { speaker: "AI", text: "Alright, Luke.", time: 0 },
@@ -76,97 +74,65 @@ export const patientConvo_pt4 = [
 export const patientConvo_pt5 = [
   { speaker: "AI", text: "Is there anything else I can help you with?", time: 0 },
   { speaker: "Patient", text: "No, that was all.", time: 2.1 },
-  { speaker: "AI", text: "Take care.", time: 3.4 },
-  { speaker: "AI", text: "Bye.", time: 4.6 },
+  { speaker: "AI", text: "Take care, Bye.", time: 3.4 },
 ];
 
-  import { isIOS } from "../utils/helpers";
+import { isIOS } from "../utils/helpers";
 
-	
-  window.addEventListener("load", () => {
-    const PhoneSection__inner = document.querySelector(".PhoneSection__inner");
-    const muteBtn = document.querySelector(".PhoneSection__muteBtn");
-    const audioEls = document.querySelectorAll(
-      ".PhoneSection__audio"
-    ) as NodeListOf<HTMLAudioElement>;
+window.addEventListener("load", () => {
+  const PhoneSection__inner = document.querySelector(".PhoneSection__inner");
+  const muteBtn = document.querySelector(".PhoneSection__muteBtn");
+  const textElements = document.querySelectorAll('.PhoneSection__convo__text');
+  const audioEls = document.querySelectorAll(".PhoneSection__audio");
 
-    if (isIOS()) {
-      PhoneSection__inner.classList.add("PhoneSection__inner--isIOS");
-    }
+  if (isIOS()) {
+    PhoneSection__inner.classList.add("PhoneSection__inner--isIOS");
+  }
 
-    // Wait for all audio files to preload
-    const waitForAudio = Array.from(audioEls).map((audio) => {
-      return new Promise((resolve) => {
-        audio.addEventListener("canplaythrough", resolve, { once: true });
-      });
-    });
-
-    Promise.all(waitForAudio).then(() => {
-      PhoneSection__inner.classList.add("PhoneSection__inner--ready");
-    });
-
-    // Mute toggle logic (unchanged)
-    muteBtn.addEventListener("click", () => {
-      if (audioEls[0].muted) {
-        audioEls.forEach((audio) => {
-          audio.muted = false;
-        });
-
-        muteBtn.classList.add("PhoneSection__muteBtn--isUnmuted");
-        muteBtn.querySelector("span")!.textContent = "Mute";
-        muteBtn.querySelector("svg > path")!.setAttribute(
-          "d",
-          "M2 16.0001H5.88889L11.1834 20.3319C11.2727 20.405 11.3846 20.4449 11.5 20.4449C11.7761 20.4449 12 20.2211 12 19.9449V4.05519C12 3.93977 11.9601 3.8279 11.887 3.73857C11.7121 3.52485 11.3971 3.49335 11.1834 3.66821L5.88889 8.00007H2C1.44772 8.00007 1 8.44778 1 9.00007V15.0001C1 15.5524 1.44772 16.0001 2 16.0001ZM23 12C23 15.292 21.5539 18.2463 19.2622 20.2622L17.8445 18.8444C19.7758 17.1937 21 14.7398 21 12C21 9.26016 19.7758 6.80629 17.8445 5.15557L19.2622 3.73779C21.5539 5.75368 23 8.70795 23 12ZM18 12C18 10.0883 17.106 8.38548 15.7133 7.28673L14.2842 8.71584C15.3213 9.43855 16 10.64 16 12C16 13.36 15.3213 14.5614 14.2842 15.2841L15.7133 16.7132C17.106 15.6145 18 13.9116 18 12Z"
-        );
-      } else {
-        audioEls.forEach((audio) => {
-          audio.muted = true;
-        });
-        muteBtn.classList.remove("PhoneSection__muteBtn--isUnmuted");
-        muteBtn.querySelector("span")!.textContent = "Unmute";
-        muteBtn.querySelector("svg > path")!.setAttribute(
-          "d",
-          "M5.88889 16.0001H2C1.44772 16.0001 1 15.5524 1 15.0001V9.00007C1 8.44778 1.44772 8.00007 2 8.00007H5.88889L11.1834 3.66821C11.3971 3.49335 11.7121 3.52485 11.887 3.73857C11.9601 3.8279 12 3.93977 12 4.05519V19.9449C12 20.2211 11.7761 20.4449 11.5 20.4449C11.3846 20.4449 11.2727 20.405 11.1834 20.3319L5.88889 16.0001ZM20.4142 12.0001L23.9497 15.5356L22.5355 16.9498L19 13.4143L15.4645 16.9498L14.0503 15.5356L17.5858 12.0001L14.0503 8.46454L15.4645 7.05032L19 10.5859L22.5355 7.05032L23.9497 8.46454L20.4142 12.0001Z"
-        );
-      }
-    });
-
-    const allConvos = [
-      patientConvo_pt1,
-      patientConvo_pt2,
-      patientConvo_pt3,
-      patientConvo_pt4,
-      patientConvo_pt5,
-    ];
-
-    audioEls.forEach((audio, audioIndex) => {
-      const convo = allConvos[audioIndex];
-
-      audio.addEventListener("timeupdate", () => {
-        const time = audio.currentTime;
-
-        convo.forEach((line, lineIndex) => {
-          const selector = `.PhoneSection__convo__text[data-part="${audioIndex}"][data-line="${lineIndex}"]`;
-          const el = document.querySelector(selector);
-		  if (!el) {
-			console.warn(`Missing element for part ${audioIndex}, line ${lineIndex}`);
-			return;
-			}
-          if (time >= line.time && el && !el.classList.contains("visible")) {
-            el.classList.add("visible");
-          }
-        });
-      });
+  // Wait for all audio files to preload
+  const waitForAudio = Array.from(audioEls).map((audio) => {
+    return new Promise((resolve) => {
+      audio.addEventListener("canplaythrough", resolve, { once: true });
     });
   });
+
+  Promise.all(waitForAudio).then(() => {
+    PhoneSection__inner.classList.add("PhoneSection__inner--ready");
+
+    // Add the visible class to text elements after the audio is ready, with individual delays
+    textElements.forEach((el, index) => {
+      setTimeout(() => {
+		el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        el.classList.add('visible'); // Trigger transition for each element
+      }, index * 1000); // 1 second delay per element (can adjust this as needed)
+    });
+  });
+
+  // Mute toggle logic (unchanged)
+  muteBtn.addEventListener("click", () => {
+    if (audioEls[0].muted) {
+      audioEls.forEach((audio) => {
+        audio.muted = false;
+      });
+      muteBtn.classList.add("PhoneSection__muteBtn--isUnmuted");
+      muteBtn.querySelector("span").textContent = "Mute";
+    } else {
+      audioEls.forEach((audio) => {
+        audio.muted = true;
+      });
+      muteBtn.classList.remove("PhoneSection__muteBtn--isUnmuted");
+      muteBtn.querySelector("span").textContent = "Unmute";
+    }
+  });
+});
 </script>
 
 
 <div class="PhoneSection__title">
 	<h1 class="specialH1">
-		A GP <span style="font-weight: 700;">Call</span>
+		How InCall<span style="font-weight: 700;">Works</span>
 	</h1>
-	<h1 class="">Powered entirely by inCall</h1>
+	<h1 class="">Live GP Call</h1>
 </div>
 
 <div class="PhoneSection__wrap">
@@ -278,7 +244,7 @@ export const patientConvo_pt5 = [
 			position: relative;
 			width: max-content;
 			height: calc(100dvh - 180px);
-			// margin-top: 1.2rem;
+			margin-top: 1.2rem;
 
 			&__time {
 				position: absolute;
@@ -398,18 +364,17 @@ export const patientConvo_pt5 = [
 
 	.PhoneSection__convo__text {
 		opacity: 0;
-		transform: translateY(10px);
-		transition: all 0.5s ease-in-out;
+		transform: translateX(-100px);
 		visibility: hidden;
 
-
-		&.visible {
-			opacity: 1;
-			transform: translateY(0);
-			visibility: visible;
-
-		}
 	}
+
+	.PhoneSection__convo__text.visible {
+			opacity: 1;
+			transform: translateX(0);
+			visibility: visible;
+		}
+
 
   .PhoneSection__inner {
 	opacity: 0;
