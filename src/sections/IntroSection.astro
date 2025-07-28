@@ -81,8 +81,7 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 
 		 svg {
 		 	width: 100%;
-			max-width: 1600;
-		 	height: auto;
+		 	height: 80vh;
 		 }
 
 		.btn {
@@ -95,8 +94,8 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 @media (max-width: 768px) {
 	.IntroSection{
 		svg {
-		width: 80vw; 
-		max-width: 1000px; 
+		width: 80vw; /* 80% of the viewport width for smaller screens */
+		max-width: 700px; /* Set a maximum size to prevent it from becoming too large */
 		height: auto;
 		}
 
@@ -114,12 +113,6 @@ import SectionLayout from "../layouts/SectionLayout.astro";
 
 	@media (max-width: 500px) {
   .IntroSection {
-	svg{
-		width: 100vw;
-		max-width: 500px;
-		height: auto;
-	}
-
     &__gif {
       display: block;
     }
