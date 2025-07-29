@@ -6,11 +6,11 @@ import PhoneDotLoader from "../components/PhoneDotLoader.astro";
 
 export const patientConvo_pt1 = [
   { speaker: "AI", text: "Hello, you’ve reached the GP Centre.", time: 0 },
-  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.48 },
-  { speaker: "Patient", text: "Luke Davis.", time: 4.45 },
-  { speaker: "AI", text: "Thanks, Luke.", time: 5.68 },
-  { speaker: "AI", text: "And your date of birth, please?", time: 7 },
-  { speaker: "Patient", text: "15th of March, 1985.", time: 8.7 },
+  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.5 },
+  { speaker: "Patient", text: "Luke Davis.", time: 4.8 },
+  { speaker: "AI", text: "Thanks, Luke.", time: 6.3 },
+  { speaker: "AI", text: "And your date of birth, please?", time: 8.1 },
+  { speaker: "Patient", text: "15th of March, 1985.", time: 9.9 },
 ];
 export const patientConvo_pt2 = [
   { speaker: "AI", text: "Thank you, Luke. How can I help?", time: 0 },
@@ -19,10 +19,10 @@ export const patientConvo_pt2 = [
 export const patientConvo_pt3 = [
   { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
   { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .5 },
-  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 5.92 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 6.4 },
   { speaker: "AI", text: "", time: 12 },
-  { speaker: "Patient", text: "Yes, that works.", time: 9.75 },
-  { speaker: "AI", text: "Great. I'll book you in.", time: 11.55 },
+  { speaker: "Patient", text: "Yes, that works.", time: 11 },
+  { speaker: "AI", text: "Great. I'll book you in.", time: 13 },
 ];
 export const patientConvo_pt4 = [
   { speaker: "AI", text: "Alright, Luke.", time: 0 },
@@ -77,15 +77,6 @@ export const patientConvo_pt5 = [
   { speaker: "AI", text: "Take care, Bye.", time: 3.4 },
 ];
 
-const allConvos = [
-  patientConvo_pt1, 
-  patientConvo_pt2, 
-  patientConvo_pt3, 
-  patientConvo_pt4, 
-  patientConvo_pt5
-];
-
-
 import { isIOS } from "../utils/helpers";
 
 window.addEventListener("load", () => {
@@ -108,26 +99,12 @@ window.addEventListener("load", () => {
   Promise.all(waitForAudio).then(() => {
     PhoneSection__inner.classList.add("PhoneSection__inner--ready");
 
-	let previousSpeaker = null;
-
     // Add the visible class to text elements after the audio is ready, with individual delays
     textElements.forEach((el, index) => {
       setTimeout(() => {
-		const partIndex = el.getAttribute('data-part');
-        const lineIndex = el.getAttribute('data-line');
-		const currentSpeaker = allConvos[partIndex][lineIndex].speaker;
-
-		if (currentSpeaker !== previousSpeaker) {
-          // Add the transition and transform only on speaker change
-          el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-          el.classList.add('visible'); // Trigger transition for the new speaker
-        } else {
-          // Only apply the visibility for the same speaker
-          el.classList.add('visible'); // No transform for the same speaker
-        }
-
-		previousSpeaker = currentSpeaker;
-      }, index * 1000); // 1 second delay per element
+		el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        el.classList.add('visible'); // Trigger transition for each element
+      }, index * 1000); // 1 second delay per element (can adjust this as needed)
     });
   });
 
@@ -153,7 +130,7 @@ window.addEventListener("load", () => {
 
 <div class="PhoneSection__title">
 	<h1 class="specialH1">
-		<span style="font-weight: 600;">Live GP Call</span>
+		Live<span style="font-weight: 700;">GP Call</span>
 	</h1>
 	<h1 class="">Powered by inCall</h1>
 </div>
@@ -267,7 +244,7 @@ window.addEventListener("load", () => {
 			position: relative;
 			width: max-content;
 			height: calc(100dvh - 180px);
-			margin-top: 1.2rem;
+			// margin-top: 1.2rem;
 
 			&__time {
 				position: absolute;
@@ -299,7 +276,7 @@ window.addEventListener("load", () => {
 		&__loadingPart,
 		&__fakeConvoPart {
 			height: 0;
-			overflow: visible;
+			overflow: hidden;
 		}
 		&__convoPart:first-of-type {
 			height: 6rem;
@@ -384,30 +361,4 @@ window.addEventListener("load", () => {
 			}
 		}
 	}
-
-	.PhoneSection__convo__text {
-	opacity: 0; /* Start hidden */
-	transform: translateX(-100px); /* Start off-screen */
-	visibility: hidden; /* Make it fully hidden */
-	transition: opacity 0.5s ease, transform 0.5s ease; /* Define the transition */
-	}
-
-	.PhoneSection__convo__text.visible {
-		opacity: 1; /* Fade in */
-		transform: translateX(0); /* Slide in */
-		visibility: visible; /* Make it visible */
-	}
-
-
-  .PhoneSection__inner {
-	opacity: 0;
-	transition: opacity 0.6s ease;
-	pointer-events: none;
-}
-
-.PhoneSection__inner--ready {
-	opacity: 1;
-	pointer-events: auto;
-}
-
 </style>
