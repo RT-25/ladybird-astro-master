@@ -6,11 +6,11 @@ import PhoneDotLoader from "../components/PhoneDotLoader.astro";
 
 export const patientConvo_pt1 = [
   { speaker: "AI", text: "Hello, you’ve reached the GP Centre.", time: 0 },
-  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.5 },
-  { speaker: "Patient", text: "Luke Davis.", time: 4.8 },
-  { speaker: "AI", text: "Thanks, Luke.", time: 6.3 },
-  { speaker: "AI", text: "And your date of birth, please?", time: 8.1 },
-  { speaker: "Patient", text: "15th of March, 1985.", time: 9.9 },
+  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.48 },
+  { speaker: "Patient", text: "Luke Davis.", time: 4.45 },
+  { speaker: "AI", text: "Thanks, Luke.", time: 5.68 },
+  { speaker: "AI", text: "And your date of birth, please?", time: 7 },
+  { speaker: "Patient", text: "15th of March, 1985.", time: 8.7 },
 ];
 export const patientConvo_pt2 = [
   { speaker: "AI", text: "Thank you, Luke. How can I help?", time: 0 },
@@ -19,10 +19,10 @@ export const patientConvo_pt2 = [
 export const patientConvo_pt3 = [
   { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
   { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .5 },
-  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 6.4 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 5.92 },
   { speaker: "AI", text: "", time: 12 },
-  { speaker: "Patient", text: "Yes, that works.", time: 11 },
-  { speaker: "AI", text: "Great. I'll book you in.", time: 13 },
+  { speaker: "Patient", text: "Yes, that works.", time: 9.75 },
+  { speaker: "AI", text: "Great. I'll book you in.", time: 11.55 },
 ];
 export const patientConvo_pt4 = [
   { speaker: "AI", text: "Alright, Luke.", time: 0 },
@@ -37,10 +37,10 @@ export const patientConvo_pt5 = [
 ];
 
 export const convoLoadingText = [
-	["Verifying…", "Verified"],
-	["Analysing…", ""],
-	["Booking…", "Booked"],
-	["Sending…", "Sent"],
+	["Verifying", "Verified"],
+	["Analysing", ""],
+	["Booking", "Booked"],
+	["Sending", "Sent"],
 ];
 ---
 
@@ -153,9 +153,9 @@ window.addEventListener("load", () => {
 
 <div class="PhoneSection__title">
 	<h1 class="specialH1">
-		How InCall<span style="font-weight: 700;">Works</span>
+		<span style="font-weight: 600;">Live GP Call</span>
 	</h1>
-	<h1 class="">Live GP Call</h1>
+	<h1 class="">Powered by inCall</h1>
 </div>
 
 <div class="PhoneSection__wrap">
@@ -240,7 +240,7 @@ window.addEventListener("load", () => {
 
 			.specialH1 {
 				font-family: "SF Pro Display", Arial, sans-serif;
-				font-size: 4rem;
+				font-size: 3rem;
 				font-weight: 600;
 				// color: #ff0000;
 			}
@@ -390,12 +390,12 @@ window.addEventListener("load", () => {
 	transform: translateX(-100px); /* Start off-screen */
 	visibility: hidden; /* Make it fully hidden */
 	transition: opacity 0.5s ease, transform 0.5s ease; /* Define the transition */
+	}
 
-	&.visible {
+	.PhoneSection__convo__text.visible {
 		opacity: 1; /* Fade in */
 		transform: translateX(0); /* Slide in */
 		visibility: visible; /* Make it visible */
-	}
 	}
 
 
