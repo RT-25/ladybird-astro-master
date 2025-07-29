@@ -399,6 +399,13 @@ window.addEventListener("load", () => {
 	}
 	}
 
+@media (max-width: 600px) {
+  .PhoneSection__convo__text {
+	opacity: 1;
+    transform: translateX(0); /* Prevent text from being off-screen */
+    visibility: visible;
+  }
+}
 
   .PhoneSection__inner {
 	opacity: 0;
