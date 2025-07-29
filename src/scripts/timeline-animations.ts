@@ -105,7 +105,7 @@ ScrollTrigger.create({
 		if (shouldScrollThroughPlainText && !isAutomatedScrolling)
 			gsap.to(window, {
 				scrollTo: { y: ".PlainTextSectionWrapper" },
-				duration: 0.05,
+				duration: 0.1,
 				ease: "power2.out",
 
 				onComplete: () => {
