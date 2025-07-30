@@ -1,0 +1,364 @@
+---
+import TabToggle from "../components/TabToggle.astro";
+import SectionLayout from "../layouts/SectionLayout.astro";
+import { tabItems } from "../utils/constants";
+import PhoneDotLoader from "../components/PhoneDotLoader.astro";
+
+export const patientConvo_pt1 = [
+  { speaker: "AI", text: "Hello, you’ve reached the GP Centre.", time: 0 },
+  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.5 },
+  { speaker: "Patient", text: "Luke Davis.", time: 4.8 },
+  { speaker: "AI", text: "Thanks, Luke.", time: 6.3 },
+  { speaker: "AI", text: "And your date of birth, please?", time: 8.1 },
+  { speaker: "Patient", text: "15th of March, 1985.", time: 9.9 },
+];
+export const patientConvo_pt2 = [
+  { speaker: "AI", text: "Thank you, Luke. How can I help?", time: 0 },
+  { speaker: "Patient", text: "I've been getting headaches on and off for the past few weeks.", time: .7 },
+];
+export const patientConvo_pt3 = [
+  { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
+  { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .5 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 6.4 },
+  { speaker: "AI", text: "", time: 12 },
+  { speaker: "Patient", text: "Yes, that works.", time: 11 },
+  { speaker: "AI", text: "Great. I'll book you in.", time: 13 },
+];
+export const patientConvo_pt4 = [
+  { speaker: "AI", text: "Alright, Luke.", time: 0 },
+  { speaker: "AI", text: "You'll receive a confirmation text.", time: 1.6 },
+  { speaker: "AI", text: "And a feedback form shortly.", time: 3.1 },
+  { speaker: "Patient", text: "Thanks.", time: 4.4 },
+];
+export const patientConvo_pt5 = [
+  { speaker: "AI", text: "Is there anything else I can help you with?", time: 0 },
+  { speaker: "Patient", text: "No, that was all.", time: 2.1 },
+  { speaker: "AI", text: "Take care, Bye.", time: 3.4 },
+];
+
+export const convoLoadingText = [
+	["Verifying", "Verified"],
+	["Analysing", ""],
+	["Booking", "Booked"],
+	["Sending", "Sent"],
+];
+---
+
+<script>
+export const patientConvo_pt1 = [
+  { speaker: "AI", text: "Hello, you’ve reached the GP Centre.", time: 0 },
+  { speaker: "AI", text: "Could you confirm your full name, please?", time: 2.48 },
+  { speaker: "Patient", text: "Luke Davis.", time: 4.45 },
+  { speaker: "AI", text: "Thanks, Luke.", time: 5.68 },
+  { speaker: "AI", text: "And your date of birth, please?", time: 7 },
+  { speaker: "Patient", text: "15th of March, 1985.", time: 8.7 },
+];
+export const patientConvo_pt2 = [
+  { speaker: "AI", text: "Thank you, Luke. How can I help?", time: 0 },
+  { speaker: "Patient", text: "I've been getting headaches on and off for the past few weeks.", time: .7 },
+];
+export const patientConvo_pt3 = [
+  { speaker: "AI", text: "I'm sorry to hear that, Luke.", time: 0 },
+  { speaker: "AI", text: "Let's get you booked in with Dr. Lee as soon as we can.", time: .5 },
+  { speaker: "AI", text: "Would Wednesday at 11:00 in the morning work?", time: 5.92 },
+  { speaker: "AI", text: "", time: 12 },
+  { speaker: "Patient", text: "Yes, that works.", time: 9.75 },
+  { speaker: "AI", text: "Great. I'll book you in.", time: 11.55 },
+];
+export const patientConvo_pt4 = [
+  { speaker: "AI", text: "Alright, Luke.", time: 0 },
+  { speaker: "AI", text: "You'll receive a confirmation text.", time: 1.6 },
+  { speaker: "AI", text: "And a feedback form shortly.", time: 3.1 },
+  { speaker: "Patient", text: "Thanks.", time: 4.4 },
+];
+export const patientConvo_pt5 = [
+  { speaker: "AI", text: "Is there anything else I can help you with?", time: 0 },
+  { speaker: "Patient", text: "No, that was all.", time: 2.1 },
+  { speaker: "AI", text: "Take care, Bye.", time: 3.4 },
+];
+
+import { isIOS } from "../utils/helpers";
+
+window.addEventListener("load", () => {
+  const PhoneSection__inner = document.querySelector(".PhoneSection__inner");
+  const muteBtn = document.querySelector(".PhoneSection__muteBtn");
+  const textElements = document.querySelectorAll('.PhoneSection__convo__text');
+  const audioEls = document.querySelectorAll(".PhoneSection__audio");
+
+  if (isIOS()) {
+    PhoneSection__inner.classList.add("PhoneSection__inner--isIOS");
+  }
+
+  // Wait for all audio files to preload
+  const waitForAudio = Array.from(audioEls).map((audio) => {
+    return new Promise((resolve) => {
+      audio.addEventListener("canplaythrough", resolve, { once: true });
+    });
+  });
+
+  Promise.all(waitForAudio).then(() => {
+    PhoneSection__inner.classList.add("PhoneSection__inner--ready");
+
+    // Add the visible class to text elements after the audio is ready, with individual delays
+    textElements.forEach((el, index) => {
+      setTimeout(() => {
+		el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        el.classList.add('visible'); // Trigger transition for each element
+      }, index * 1000); // 1 second delay per element (can adjust this as needed)
+    });
+  });
+
+  // Mute toggle logic (unchanged)
+  muteBtn.addEventListener("click", () => {
+    if (audioEls[0].muted) {
+      audioEls.forEach((audio) => {
+        audio.muted = false;
+      });
+      muteBtn.classList.add("PhoneSection__muteBtn--isUnmuted");
+      muteBtn.querySelector("span").textContent = "Mute";
+    } else {
+      audioEls.forEach((audio) => {
+        audio.muted = true;
+      });
+      muteBtn.classList.remove("PhoneSection__muteBtn--isUnmuted");
+      muteBtn.querySelector("span").textContent = "Unmute";
+    }
+  });
+});
+</script>
+
+
+<div class="PhoneSection__title">
+	<h1 class="specialH1">
+		Live<span style="font-weight: 700;">GP Call</span>
+	</h1>
+	<h1 class="">Powered by inCall</h1>
+</div>
+
+<div class="PhoneSection__wrap">
+	<audio controls muted class="PhoneSection__audio PhoneSection__audio--1">
+		<source
+			src="https://res.cloudinary.com/dywp91yx7/video/upload/v1746625135/folio-v2/ladybird-part-1.mp3"
+			type="audio/mpeg"
+		/>
+	</audio>
+	<audio controls muted class="PhoneSection__audio PhoneSection__audio--2">
+		<source
+			src="/audio/part-2.mp3"
+			type="audio/mpeg"
+		/>
+	</audio>
+	<audio controls muted class="PhoneSection__audio PhoneSection__audio--3">
+		<source
+			src="/audio/part-3.mp3"
+			type="audio/mpeg"
+		/>
+	</audio>
+	<audio controls muted class="PhoneSection__audio PhoneSection__audio--4">
+		<source
+			src="https://res.cloudinary.com/dywp91yx7/video/upload/v1746140775/folio-v2/ladybird-part-4.mp3"
+			type="audio/mpeg"
+		/>
+	</audio>
+	<audio controls muted class="PhoneSection__audio PhoneSection__audio--5">
+		<source
+			src="https://res.cloudinary.com/dywp91yx7/video/upload/v1746140791/folio-v2/ladybird-part-5.mp3"
+			type="audio/mpeg"
+		/>
+	</audio>
+	<img src="/images/iphone-shadow.jpg" alt="Phone" class="PhoneSection__bg" />
+	<!-- <p class="PhoneSection__wrap__time">09:28</p> -->
+	<div class="PhoneSection__inner">
+		<PhoneDotLoader />
+		<div class="PhoneSection__convoWrap">
+			<div class="PhoneSection__fakeConvoPart"></div>
+			{
+				[patientConvo_pt1, patientConvo_pt2, patientConvo_pt3, patientConvo_pt4, patientConvo_pt5].map((convoPart, i) => (
+					<div class="PhoneSection__convoPart">
+					{convoPart.map((convoItem, j) => (
+						<div class="PhoneSection__convo">
+						<p
+							class={`PhoneSection__convo__text PhoneSection__convo__text--${convoItem.speaker}`}
+							data-part={i}
+							data-line={j}
+							>
+							{convoItem.text}
+						</p>
+						</div>
+					))}
+					</div>
+				))
+				}
+
+			{
+				convoLoadingText.map((convoItem) => (
+					<div class="PhoneSection__loadingPart">
+						{convoItem.map((item) => (
+							<div class="PhoneSection__loading">
+								<p class="PhoneSection__loading__text">{item}</p>
+							</div>
+						))}
+					</div>
+				))
+			}
+		</div>
+	</div>
+</div>
+
+<style lang="scss" scoped>
+	.PhoneSection {
+		&__audio {
+			display: none;
+		}
+
+		&__title {
+			margin-top: 1.5rem;
+			margin-bottom: 1.5rem;
+
+			.specialH1 {
+				font-family: "SF Pro Display", Arial, sans-serif;
+				font-size: 3rem;
+				font-weight: 600;
+				// color: #ff0000;
+			}
+
+			h1 {
+				font-size: 2rem;
+				font-weight: 400;
+				line-height: 1.1;
+				text-align: center;
+				font-family: "Patrick Hand SC";
+			}
+		}
+
+		&__bg {
+			height: 100%;
+			max-height: 80vh;
+
+			width: 100%;
+			max-width: 100vw;
+			object-fit: contain;
+		}
+
+		&__wrap {
+			position: relative;
+			width: max-content;
+			height: calc(100dvh - 180px);
+			// margin-top: 1.2rem;
+
+			&__time {
+				position: absolute;
+				top: 4.8vh;
+
+				left: 7vh;
+				font-size: 1.5vh;
+				font-weight: 700;
+			}
+		}
+		&__inner {
+			// max-height: 80vh;
+			position: absolute;
+			top: 0;
+			left: 0;
+
+			width: 100%;
+			height: 100%;
+			padding: 1rem 4rem;
+
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 2rem;
+		}
+
+		&__convoPart,
+		&__loadingPart,
+		&__fakeConvoPart {
+			height: 0;
+			overflow: hidden;
+		}
+		&__convoPart:first-of-type {
+			height: 6rem;
+		}
+
+		&__loading,
+		&__convo {
+			position: relative;
+
+			&__text {
+				font-size: 1rem;
+				line-height: 1.5;
+				color: #333;
+				margin: 0;
+				padding: 0;
+				transition: all 0.5s;
+				text-align: center;
+
+				overflow: hidden;
+
+				&--Patient {
+					// font-weight: 700;
+				}
+
+				& > .word {
+					// width: 0;
+				}
+
+				.char {
+					width: 0;
+					opacity: 0;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 768px) {
+		.PhoneSection {
+			&__title {
+				gap: 0;
+				.specialH1 {
+					font-size: 2.5rem;
+				}
+
+				h1 {
+					font-size: 1.2rem;
+					line-height: 1;
+				}
+			}
+
+			&__bg {
+				max-height: 90vh;
+			}
+
+			&__wrap {
+				height: calc(100dvh - 170px);
+			}
+
+			&__inner {
+				padding: 1rem 7rem;
+				// padding: 1rem clamp(0px, 7vh, 7rem);
+			}
+
+			&__loading,
+			&__convo {
+				&__text {
+					// font-size: 0.8rem;
+					font-size: clamp(8px, 1.8vh, 0.8rem);
+				}
+			}
+		}
+	}
+	@media (max-width: 768px) and (pointer: coarse) {
+		.PhoneSection {
+			&__wrap--isIOS {
+				height: calc(100dvh - 140px);
+				// height: calc(100dvh - 216px);
+			}
+
+			&__inner--isIOS {
+				// padding: 1rem 6rem;
+			}
+		}
+	}
+</style>
